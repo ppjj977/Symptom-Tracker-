@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A private, offline daily symptom tracker. Log how you feel and export a report for your doctor." />
+  <title>Daily Symptom Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="wrap">
+      <h1>🩺 Daily Symptom Tracker</h1>
+      <p class="tagline">Log how you feel each day. Your data stays private on this device.</p>
+    </div>
+  </header>
+
+  <nav class="tabs wrap" role="tablist">
+    <button class="tab is-active" data-tab="log" role="tab">Log Entry</button>
+    <button class="tab" data-tab="history" role="tab">History</button>
+    <button class="tab" data-tab="report" role="tab">Doctor Report</button>
+  </nav>
+
+  <main class="wrap">
+    <!-- ===== Log Entry tab ===== -->
+    <section id="tab-log" class="panel is-active">
+      <form id="entry-form" autocomplete="off">
+        <h2>How are you feeling?</h2>
+
+        <div class="field">
+          <label for="date">Date</label>
+          <input type="date" id="date" name="date" required />
+        </div>
+
+        <fieldset class="field">
+          <legend>Overall wellbeing today</legend>
+          <div class="mood-row" id="mood-row">
+            <button type="button" class="mood" data-mood="1" title="Very poor">😣</button>
+            <button type="button" class="mood" data-mood="2" title="Poor">🙁</button>
+            <button type="button" class="mood" data-mood="3" title="Okay">😐</button>
+            <button type="button" class="mood" data-mood="4" title="Good">🙂</button>
+            <button type="button" class="mood" data-mood="5" title="Great">😀</button>
+          </div>
+          <input type="hidden" id="mood" name="mood" />
+        </fieldset>
+
+        <h3>Symptoms</h3>
+        <p class="hint">Add each symptom you noticed today and rate how severe it was.</p>
+        <div id="symptom-list"></div>
+        <button type="button" id="add-symptom" class="btn btn-ghost">+ Add symptom</button>
+
+        <div class="field">
+          <label for="meds">Medications taken (optional)</label>
+          <input type="text" id="meds" name="meds" placeholder="e.g. Ibuprofen 200mg, morning" />
+        </div>
+
+        <div class="field">
+          <label for="notes">Notes (optional)</label>
+          <textarea id="notes" name="notes" rows="3" placeholder="Triggers, sleep, food, anything worth remembering…"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save entry</button>
+          <button type="button" id="cancel-edit" class="btn btn-ghost" hidden>Cancel</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ===== History tab ===== -->
+    <section id="tab-history" class="panel">
+      <h2>Your history</h2>
+      <div id="history-empty" class="empty">No entries yet. Start by logging today.</div>
+      <ul id="history-list" class="history"></ul>
+    </section>
+
+    <!-- ===== Doctor Report tab ===== -->
+    <section id="tab-report" class="panel">
+      <h2>Report for your doctor</h2>
+      <p class="hint">Pick a range, then print or download. Everything stays on this device.</p>
+      <div class="report-controls">
+        <label>From <input type="date" id="report-from" /></label>
+        <label>To <input type="date" id="report-to" /></label>
+        <button type="button" id="report-refresh" class="btn btn-ghost">Update</button>
+        <button type="button" id="report-print" class="btn btn-primary">Print / Save as PDF</button>
+        <button type="button" id="report-csv" class="btn btn-ghost">Download CSV</button>
+      </div>
+      <div id="report-output" class="report-output"></div>
+    </section>
+  </main>
+
+  <footer class="app-footer wrap">
+    <p>This tool is for personal tracking and does not provide medical advice. Always consult a healthcare professional.</p>
+    <button type="button" id="export-data" class="link-btn">Back up all data</button>
+    <button type="button" id="import-data" class="link-btn">Restore from backup</button>
+    <input type="file" id="import-file" accept="application/json" hidden />
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
